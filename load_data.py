@@ -24,10 +24,3 @@ def string_series_to_datetime(series):
 def dataframe_str_times_to_timestamp(dataframe, time_key):
     dataframe[time_key] = string_series_to_datetime(dataframe[time_key])
     return dataframe
-
-
-dataframe_w_timestamps = dataframe_str_times_to_timestamp(data, 'times')
-
-print(type(dataframe_w_timestamps.loc[576]['times']))
-
-
