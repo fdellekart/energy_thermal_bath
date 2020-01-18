@@ -16,7 +16,18 @@ def get_date_time(datetime_string):
     hour_int = int(datetime_string[11:13])
     minute_int = int(datetime_string[14:16])
     second_int = int(datetime_string[17:19])
-
     return datetime(year_int, month_int, day_int, hour_int, minute_int, second_int)
 
-print(get_date_time(data.loc[0,'times']))    
+def string_series_to_datetime(series):
+    return series.apply(get_date_time)
+
+def dataframe_str_times_to_timestamp(dataframe, time_key):
+    dataframe[time_key] = string_series_to_datetime(dataframe[time_key])
+    return dataframe
+
+
+dataframe_w_timestamps = dataframe_str_times_to_timestamp(data, 'times')
+
+print(type(dataframe_w_timestamps.loc[576]['times']))
+
+
