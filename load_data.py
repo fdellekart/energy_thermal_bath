@@ -4,10 +4,6 @@ from datetime import datetime
 with open("load_curve_thermal_bath.csv", 'r') as f:
     data = pd.read_csv(f)
 
-#print(data)
-
-#print(data.loc[0,'times'])
-
 
 def get_date_time(datetime_string):
     """datetime_string: str formated as 'dd-mm-yyyy hh:mm:ss'
@@ -27,9 +23,10 @@ def string_series_to_datetime(series):
     return series.apply(get_date_time)
 
 
-def dataframe_str_times_to_timestamp(dataframe, time_key):
+def df_str_times_to_timestamp_index(dataframe,time_key):
     """dataframe: pd.DataFrame object
     time_key: key of collumn that holds str formated as 'dd-mm-yyyy hh:mm:ss'
     returns dataframe with all elements of time column changed to datetime object"""
     dataframe[time_key] = string_series_to_datetime(dataframe[time_key])
+    dataframe = dataframe.set_index('time_key')
     return dataframe
