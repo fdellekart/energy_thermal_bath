@@ -11,6 +11,8 @@ class LoadCurve:
 
 
     def load_data(self, src_path):
+        """loads data from csv at src_path
+        puts it into self.data as pd.DataFrame"""
         with open(src_path, 'r') as f:
             self.data = pd.read_csv(f)
 
