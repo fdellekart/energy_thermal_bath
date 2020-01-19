@@ -3,8 +3,15 @@ from bokeh.models import ColumnDataSource
 from bokeh.plotting import figure, output_file, show
 from datetime import datetime
 
-with open("load_curve_thermal_bath.csv", 'r') as f:
-    data = pd.read_csv(f)
+DATA_SOURCE = "load_curve_thermal_bath.csv"
+
+class LoadCurve:
+    def __init__(self):
+        self.data = None
+
+    def load_data(self, src_path):
+        with open(src_path, 'r') as f:
+            self.data = pd.read_csv(f)
 
 
 def get_date_time(datetime_string):
@@ -37,8 +44,10 @@ def df_str_times_to_timestamp_index(dataframe,time_key):
 def plot_load_curve(df,data_key):
     source = ColumnDataSource(df)    
     output_file("load_curve.html")
-    p = figure(title="load_curve", x_axis_type='datetime', x_axis_label='Time', y_axis_label='Load')
-    p.line('times', data_key, legend='Load', line_width=2, source=source)
+    p = figure(title="load_curve", x_axis_type='datetime', x_axis_label='Time',
+        y_axis_label='Load')
+    p.vline_stack(['sauna', 'lüftung'], x='times', color=['blue','red'],source=source)
+    p.line('times','gesamt',source=source,color='green')
     show(p)
 
 data = df_str_times_to_timestamp_index(data, 'times')
