@@ -1,4 +1,6 @@
 import pandas as pd
+from bokeh.models import ColumnDataSource
+from bokeh.plotting import figure, output_file, show
 from datetime import datetime
 
 with open("load_curve_thermal_bath.csv", 'r') as f:
@@ -26,7 +28,18 @@ def string_series_to_datetime(series):
 def df_str_times_to_timestamp_index(dataframe,time_key):
     """dataframe: pd.DataFrame object
     time_key: key of collumn that holds str formated as 'dd-mm-yyyy hh:mm:ss'
-    returns dataframe with all elements of time column changed to datetime object"""
+    returns dataframe with all elements of time column changed to datetime object
+    timestamps as index"""
     dataframe[time_key] = string_series_to_datetime(dataframe[time_key])
-    dataframe = dataframe.set_index('time_key')
+    dataframe = dataframe.set_index(time_key)
     return dataframe
+
+def plot_load_curve(df):
+    source = ColumnDataSource(df)    
+    output_file("load_curve.html")
+    p = figure(title="load_curve",x_axis_type='datetime', x_axis_label='time', y_axis_label='Load')
+    p.line('times', 'sauna', legend='Load', line_width=2, source=source)
+    show(p)
+
+data = df_str_times_to_timestamp_index(data, 'times')
+plot_load_curve(data)
