@@ -67,8 +67,7 @@ class LoadCurve:
         if unit in self._factor_dict.keys():
             curr_factor = self._factor_dict[self._unit]
             new_factor = self._factor_dict[unit]
-            for key in self._data:
-               self._data[key] = self._data[key].apply(lambda x: (x * curr_factor) / new_factor)
+            self._data = self._data.apply(lambda x: (x * curr_factor) / new_factor)
             self._unit = unit
         else:
             raise Exception("KeyError: Unit not existing. Must be W, kW, MW, GW or TW")
