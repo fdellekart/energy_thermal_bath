@@ -6,13 +6,15 @@ from datetime import datetime
 from pandas import Timestamp
 
 DATA_SOURCE = "load_curve_thermal_bath.csv"
+TIME_KEY = "times"
 
 load_curve = LoadCurve()
-load_curve.load_data(DATA_SOURCE)
-load_curve.data_times_to_timestamp_index("times")
-load_curve.to_kilowatts()
+load_curve.load_data(DATA_SOURCE, "W")
+load_curve.time_to_datetime(TIME_KEY)
+load_curve.time_to_index(TIME_KEY)
+load_curve.set_unit("kW")
 
-source = ColumnDataSource(load_curve.data)
+source = ColumnDataSource(load_curve.get_data())
 
 output_file("load_curve.html")
 
@@ -51,7 +53,6 @@ gesamt.line(x="times",
     source=source)
 
 p = gridplot([[sauna],[gesamt]], toolbar_location=None)
-
 
 show(p)
 
