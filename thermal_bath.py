@@ -71,3 +71,7 @@ class LoadCurve:
             self._unit = unit
         else:
             raise Exception("KeyError: Unit not existing. Must be W, kW, MW, GW or TW")
+
+
+    def moving_average(self, col_key, window):
+        self._data['SMA {}'.format(col_key)] = self._data.loc[:,col_key].rolling(window=window).mean()
