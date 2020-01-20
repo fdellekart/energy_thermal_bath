@@ -28,19 +28,18 @@ class LoadCurve:
         return datetime(year_int, month_int, day_int, hour_int, minute_int, second_int)
 
 
-    def string_series_to_datetime(self,series):
+    def string_series_to_datetime(self, time_key):
         """series: pd.Series object consisting of str formated as 'dd-mm-yyyy hh:mm:ss' 
         Returns series with all elements as datetime objects"""
-        return series.apply(self.get_date_time)
+        self.data[time_key] = self.data[time_key].apply(self.get_date_time)
 
 
-    def data_times_to_timestamp_index(self,time_key):
-        """time_key: key of collumn that holds str formated as 'dd-mm-yyyy hh:mm:ss'
-        turns all elements of self.data[time_key] into datetime objects and sets index"""
-        self.data[time_key] = self.string_series_to_datetime(self.data[time_key])
-        self.data = self.data.set_index(time_key)
+    def times_to_index(self,time_key):
+        """time_key: key of collumn that holds Timestamps
+        sets index "time_key" column to index"""
+        self.data.set_index(time_key, inplace=True)
 
     def to_kilowatts(self):
         for key in self.data:
-            self.data[key] = self.data[key].apply(lambda x: x/1000)
+            self.data[key].apply(lambda x: x/1000)
         
