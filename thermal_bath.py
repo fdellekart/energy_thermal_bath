@@ -33,7 +33,7 @@ class LoadCurve:
         return datetime(year_int, month_int, day_int, hour_int, minute_int, second_int)
 
 
-    def string_series_to_datetime(self, time_key):
+    def time_to_datetime(self, time_key):
         """time_key: str, collumn holding timestamp information as string
         
         turns all elements in self.data[time_key] from str formated as 'dd-mm-yyyy hh:mm:ss'
@@ -41,7 +41,7 @@ class LoadCurve:
         self.data[time_key] = self.data[time_key].apply(self.get_date_time)
 
 
-    def times_to_index(self,time_key):
+    def time_to_index(self,time_key):
         """time_key: key of collumn that holds Timestamps
         sets time_key column to index"""
         self.data.set_index(time_key, inplace=True)
@@ -58,4 +58,4 @@ class LoadCurve:
                self.data[key] = self.data[key].apply(lambda x: (x * factor_dict[self.unit]) / factor_dict[unit])
             self.unit = unit
         else:
-            raise Exception("KeyError: Unit not existing")
+            raise Exception("KeyError: Unit not existing. Must be W, kW, MW, GW or TW")
