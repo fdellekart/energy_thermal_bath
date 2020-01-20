@@ -33,6 +33,10 @@ class LoadCurve:
         return self._data
 
 
+    def get_unit(self):
+        return self._unit
+
+
     def _get_date_time(self,datetime_string):
         """datetime_string: str formated as 'dd-mm-yyyy hh:mm:ss'
         Returns datetime object representing input"""
@@ -74,4 +78,8 @@ class LoadCurve:
 
 
     def moving_average(self, col_key, window):
+        """col_key: str collumn key of collumn that should be averaged.
+            window: int window width
+            
+            Performs moving average on self._data[col_key] and adds new column with values"""
         self._data['SMA {}'.format(col_key)] = self._data.loc[:,col_key].rolling(window=window).mean()
