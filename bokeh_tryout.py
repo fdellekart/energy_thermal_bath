@@ -13,21 +13,20 @@ load_curve.load_data(DATA_SOURCE, "W")
 load_curve.time_to_datetime(TIME_KEY)
 load_curve.time_to_index(TIME_KEY)
 load_curve.set_unit("kW")
-load_curve.moving_average("sauna", 3)
 
 source = ColumnDataSource(load_curve.get_data())
 
 output_file("load_curve.html")
 
-sauna = figure(title="Sauna",
+lueftung = figure(title="Sauna",
     x_axis_label="Date",
     y_axis_label="Load [kW]",
     x_axis_type="datetime",
     plot_width=1000,
     plot_height=300,)
 
-sauna.line(x="times",
-    y="sauna",
+lueftung.line(x="times",
+    y="lüftung",
     line_color="red",
     line_width=1,
     source=source)
@@ -40,20 +39,20 @@ sauna.line(x="times",
 #     line_width=1,
 #     source=source)
 
-sauna_sma = figure(title="SMA Sauna",
+gesamt = figure(title="Gesamt",
     x_axis_label="Date",
     y_axis_label= "Load [kW]",
     x_axis_type="datetime",
     plot_width=1000,
     plot_height=300) 
 
-sauna_sma.line(x="times",
-    y="SMA sauna",
+gesamt.line(x="times",
+    y="gesamt",
     line_color="black",
     line_width=1,
     source=source)
 
-p = gridplot([[sauna],[sauna_sma]])
+p = gridplot([[lueftung],[gesamt]])
 
 show(p)
 

@@ -13,6 +13,8 @@ load_curve.time_to_datetime(TIME_KEY)
 load_curve.time_to_index(TIME_KEY)
 load_curve.set_unit("kW")
 
+load_curve.moving_average("lüftung", 5)
+
 sns.pairplot(load_curve.get_data())
 
 plt.show()
