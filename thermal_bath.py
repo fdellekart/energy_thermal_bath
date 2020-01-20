@@ -11,7 +11,10 @@ class LoadCurve:
 
 
     def load_data(self, src_path, unit):
-        """loads data from csv at src_path
+        """src_path: str path to csv containing load data
+            unit: str unit of data in csv
+            all data must have same unit W, kW, MW, GW or TW
+        loads data from csv at src_path
         puts it into self.data as pd.DataFrame"""
         self.unit = unit
         with open(src_path, 'r') as f:
@@ -31,8 +34,10 @@ class LoadCurve:
 
 
     def string_series_to_datetime(self, time_key):
-        """series: pd.Series object consisting of str formated as 'dd-mm-yyyy hh:mm:ss' 
-        Returns series with all elements as datetime objects"""
+        """time_key: str, collumn holding timestamp information as string
+        
+        turns all elements in self.data[time_key] from str formated as 'dd-mm-yyyy hh:mm:ss'
+            into Timestamp""" 
         self.data[time_key] = self.data[time_key].apply(self.get_date_time)
 
 
