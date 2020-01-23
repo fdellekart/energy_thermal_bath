@@ -1,14 +1,15 @@
 import pandas as pd
 import numpy as np
-from bokeh.plotting import figure
-from bokeh.models import ColumnDataSource
-from numpy.fft import fft
+from bokeh.plotting import figure, output_file, show
+from numpy.fft import fft, fftfreq
+
+from thermal_bath import LoadCurve
+
+output_file("fourier_gesamt.html")
 
 #data loading and preparation
 TIME_KEY = "times"
 SRC_PATH = "load_curve_thermal_bath.csv"
-
-sns.set()
 
 load_curve = LoadCurve()
 load_curve.load_data(SRC_PATH, "W")
@@ -16,5 +17,20 @@ load_curve.time_to_datetime(TIME_KEY)
 load_curve.time_to_index(TIME_KEY)
 load_curve.set_unit("kW")
 
-fft_gesamt = fft(load_curve.get_data["gesamt"])
+#fourier transform
+fft_gesamt = np.abs(fft(load_curve.get_data()["gesamt"].to_numpy()))
+freq = fftfreq(len(load_curve.get_data()["gesamt"].to_numpy()))
+freq = freq*0.25
+
+print(fft_gesamt)
+for i in freq:
+    print(i)
+
+p = figure(title="Fourier Transform of thermal bath load")
+
+p.line(freq, fft_gesamt, line_width=2)
+
+show(p)
+
+
 
