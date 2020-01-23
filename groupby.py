@@ -1,8 +1,6 @@
 import pandas as pd
-import numpy as np
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import ColumnDataSource
-from numpy.fft import fft, fftfreq
 
 from thermal_bath import LoadCurve
 
