@@ -16,3 +16,9 @@ load_curve.load_data(SRC_PATH, "W")
 load_curve.time_to_datetime(TIME_KEY)
 load_curve.time_to_index(TIME_KEY)
 load_curve.set_unit("kW")
+
+data = load_curve.get_data()
+
+data["weekday"] = data.index.weekday
+
+print(data.groupby(["weekday"]).mean())
