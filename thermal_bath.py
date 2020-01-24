@@ -30,10 +30,14 @@ class LoadCurve:
 
     
     def get_data(self):
+        """Returns pd.DataFrame holding the load_curve data
+            None if no data was loaded"""
         return self._data
 
 
     def get_unit(self):
+        """Returns str unit W, kW, MW, GW or TW
+            None if no data was loaded"""
         return self._unit
 
 
