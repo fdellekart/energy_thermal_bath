@@ -31,14 +31,6 @@ lueftung.line(x="times",
     line_width=1,
     source=source)
 
-# p.circle(x="times",
-#     y="gesamt",
-#     legend_label="Gesamt",
-#     fill_color="white",
-#     line_color="red",
-#     line_width=1,
-#     source=source)
-
 gesamt = figure(title="Gesamt",
     x_axis_label="Date",
     y_axis_label= "Load [kW]",
