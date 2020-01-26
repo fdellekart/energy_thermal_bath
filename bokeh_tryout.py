@@ -2,8 +2,6 @@ from bokeh.plotting import figure, output_file, show
 from bokeh.models import ColumnDataSource
 from bokeh.layouts import gridplot
 from thermal_bath import LoadCurve
-from datetime import datetime
-from pandas import Timestamp
 
 SRC_PATH = "load_curve_thermal_bath.csv"
 TIME_KEY = "times"
