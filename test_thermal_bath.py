@@ -48,5 +48,9 @@ def test_moving_average():
 
     for key in load_curve.get_data().keys():
         assert key[:3] != "SMA_"
+
+
+def test_unit():
+    assert load_curve.get_unit() in load_curve._factor_dict
     
     
