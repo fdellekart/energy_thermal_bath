@@ -17,7 +17,7 @@ class LoadCurve:
             self._unit = unit
         else:
             raise Exception("Unit not valid, must be W, kW, MW, GW or TW")
-        
+
         self._src_path = data_source
         self._time_key = time_key
 
@@ -89,4 +89,4 @@ class LoadCurve:
             window: int window width
             
             Performs moving average on self._data[col_key] and adds new column with values"""
-        self._data['SMA {}'.format(col_key)] = self._data.loc[:,col_key].rolling(window=window).mean()
+        self._data["SMA_{}".format(col_key)] = self._data[col_key].rolling(window=window).mean()

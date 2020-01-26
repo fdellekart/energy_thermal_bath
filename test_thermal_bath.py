@@ -37,5 +37,11 @@ def test_set_unit():
         load_curve.set_unit(unit)
         bool_frame = abs(data - load_curve.get_data()*factor_dict[unit]) < 0.1
         assert bool_frame.all(axis=None)
+
+
+def test_moving_average():
+    for key in load_curve.get_data().keys():
+        load_curve.moving_average(key, 5)
+        assert "SMA_{}".format(key) in load_curve.get_data().keys()
     
     
