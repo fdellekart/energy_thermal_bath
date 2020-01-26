@@ -12,7 +12,7 @@ load_curve = LoadCurve(SRC_PATH, "W", TIME_KEY)
 
 source = ColumnDataSource(load_curve.get_data())
 
-output_file("load_curve.html")
+output_file("plots\load_curve.html")
 
 lueftung = figure(title="Sauna",
     x_axis_label="Date",
