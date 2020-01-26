@@ -5,14 +5,10 @@ from thermal_bath import LoadCurve
 from datetime import datetime
 from pandas import Timestamp
 
-DATA_SOURCE = "load_curve_thermal_bath.csv"
+SRC_PATH = "load_curve_thermal_bath.csv"
 TIME_KEY = "times"
 
-load_curve = LoadCurve()
-load_curve.load_data(DATA_SOURCE, "W")
-load_curve.time_to_datetime(TIME_KEY)
-load_curve.time_to_index(TIME_KEY)
-load_curve.set_unit("kW")
+load_curve = LoadCurve(SRC_PATH, "W", TIME_KEY)
 
 source = ColumnDataSource(load_curve.get_data())
 
