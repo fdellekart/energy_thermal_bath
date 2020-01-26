@@ -5,28 +5,35 @@ from datetime import datetime
 
 
 class LoadCurve:
-    def __init__(self):
+    def __init__(self, data_source, unit, time_key):
         self._data = None
-        self._unit = None
         self._factor_dict = {'W' : 10**0,
                             'kW' : 10**3,
                             'MW' : 10**6,
                             'GW': 10**9,
                             'TW' : 10**12}
 
+        if unit in self._factor_dict:
+            self._unit = unit
+        else:
+            raise Exception("Unit not valid, must be W, kW, MW, GW or TW")
+        
+        self._src_path = data_source
+        self._time_key = time_key
 
-    def load_data(self, src_path, unit):
+        self.load_data()
+        self.time_to_datetime()
+        self.time_to_index()
+
+
+    def load_data(self):
         """src_path: str path to csv containing load data
             unit: str unit of data in csv
             all data must have same unit W, kW, MW, GW or TW
         loads data from csv at src_path
         puts it into self._data as pd.DataFrame"""
-        if unit in self._factor_dict.keys():
-            self._unit = unit
-            with open(src_path, 'r') as f:
-                self._data = pd.read_csv(f)
-        else:
-            raise Exception("KeyError: Unit not existing. Must be W, kW, MW, GW or TW")
+        with open(self._src_path, 'r') as f:
+            self._data = pd.read_csv(f)
 
     
     def get_data(self):
@@ -37,7 +44,7 @@ class LoadCurve:
         return self._unit
 
 
-    def _get_date_time(self,datetime_string):
+    def _get_date_time(self, datetime_string):
         """datetime_string: str formated as 'dd-mm-yyyy hh:mm:ss'
         Returns datetime object representing input"""
         day_int = int(datetime_string[0:2])
@@ -49,18 +56,18 @@ class LoadCurve:
         return datetime(year_int, month_int, day_int, hour_int, minute_int, second_int)
 
 
-    def time_to_datetime(self, time_key):
+    def time_to_datetime(self):
         """time_key: str, collumn holding timestamp information as string
         
         turns all elements in self.data[time_key] from str formated as 'dd-mm-yyyy hh:mm:ss'
             into Timestamp""" 
-        self._data[time_key] = self._data[time_key].apply(self._get_date_time)
+        self._data[self._time_key] = self._data[self._time_key].apply(self._get_date_time)
 
 
-    def time_to_index(self,time_key):
+    def time_to_index(self):
         """time_key: key of collumn that holds Timestamps
         sets time_key column to index"""
-        self._data.set_index(time_key, inplace=True)
+        self._data.set_index(self._time_key, inplace=True)
 
 
     def set_unit(self, unit):

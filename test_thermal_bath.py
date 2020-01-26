@@ -3,26 +3,27 @@ from pandas import DataFrame
 import pytest
 from datetime import datetime
 
-load_curve = LoadCurve()
+load_curve = LoadCurve("load_curve_thermal_bath.csv", "W", "times")
 
-def test_loading():
-    with pytest.raises(Exception):
-        load_curve.load_data("load_curve_thermal_bath.csv", "Wrong_Unit")
-    load_curve.load_data("load_curve_thermal_bath.csv", "W")
+
+def test_load_data():
     assert isinstance(load_curve.get_data(), DataFrame)
     assert load_curve._unit == "W"
+    assert load_curve._time_key == "times"
 
-def test_time_to_datetime():
-    load_curve.time_to_datetime("times")
-    times = load_curve.get_data()["times"]
-    is_datetime = [isinstance(el, datetime) for el in times]
-    assert all(is_datetime)
-    
+
+def test_get_date_time():
+    dt_string = "05-10-2020 17:34:12"
+    dt = load_curve._get_date_time(dt_string)
+    assert isinstance(dt, datetime)
+    assert dt == datetime(2020, 10, 5, 17, 34, 12)
+
+
 def test_time_to_index():
-    load_curve.time_to_index("times")
     index = load_curve.get_data().index
     is_datetime = [isinstance(el, datetime) for el in index]
     assert all(is_datetime)
+
 
 def test_set_unit():
     with pytest.raises(Exception):
