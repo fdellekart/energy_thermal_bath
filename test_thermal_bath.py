@@ -16,7 +16,6 @@ def test_time_to_datetime():
     load_curve.time_to_datetime("times")
     times = load_curve.get_data()["times"]
     is_datetime = [isinstance(el, datetime) for el in times]
-    print(is_datetime)
     assert all(is_datetime)
     
 def test_time_to_index():
@@ -26,6 +25,12 @@ def test_time_to_index():
     assert all(is_datetime)
 
 def test_set_unit():
-    pass
+    factor_dict = {'W' : 10**0,
+                    'kW' : 10**3,
+                    'MW' : 10**6,
+                    'GW': 10**9,
+                    'TW' : 10**12}
+    with pytest.raises(Exception):
+        load_curve.set_unit("wrong_unit")
     
     
