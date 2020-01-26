@@ -6,15 +6,11 @@ from thermal_bath import LoadCurve
 
 output_file("mean_over_weekdays.html")
 
-#data loading and preparation
 TIME_KEY = "times"
 SRC_PATH = "load_curve_thermal_bath.csv"
 
-load_curve = LoadCurve()
-load_curve.load_data(SRC_PATH, "W")
-load_curve.time_to_datetime(TIME_KEY)
-load_curve.time_to_index(TIME_KEY)
-load_curve.set_unit("kW")
+load_curve = LoadCurve(SRC_PATH, "W", TIME_KEY)
+
 
 data = load_curve.get_data()
 
