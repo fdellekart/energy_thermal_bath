@@ -25,12 +25,20 @@ def test_time_to_index():
     assert all(is_datetime)
 
 def test_set_unit():
+    with pytest.raises(Exception):
+        load_curve.set_unit("wrong_unit")
+
     factor_dict = {'W' : 10**0,
                     'kW' : 10**3,
                     'MW' : 10**6,
                     'GW': 10**9,
                     'TW' : 10**12}
-    with pytest.raises(Exception):
-        load_curve.set_unit("wrong_unit")
+
+    data = load_curve.get_data()
+    for unit in factor_dict:
+        print(unit)
+        load_curve.set_unit(unit)
+        bool_frame = abs(data - load_curve.get_data()*factor_dict[unit]) < 0.1
+        assert bool_frame.all(axis=None)
     
     
