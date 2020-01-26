@@ -90,3 +90,14 @@ class LoadCurve:
             
             Performs moving average on self._data[col_key] and adds new column with values"""
         self._data["SMA_{}".format(col_key)] = self._data[col_key].rolling(window=window).mean()
+
+
+    def remove_average(self):
+        """Drops all columns with keys starting 'SMA_'"""
+        dropping_labels = []
+        for key in self._data.keys():
+            if key[:3] == "SMA_":
+                dropping_labels.append(key)
+        self._data.drop(dropping_labels, axis=1, inplace=True)
+        
+

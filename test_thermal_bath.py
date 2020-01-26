@@ -43,5 +43,10 @@ def test_moving_average():
     for key in load_curve.get_data().keys():
         load_curve.moving_average(key, 5)
         assert "SMA_{}".format(key) in load_curve.get_data().keys()
+
+    load_curve.remove_average()
+
+    for key in load_curve.get_data().keys():
+        assert key[:3] != "SMA_"
     
     
