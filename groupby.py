@@ -12,7 +12,7 @@ SRC_PATH = "load_curve_thermal_bath.csv"
 load_curve = LoadCurve(SRC_PATH, "W", TIME_KEY)
 
 
-data = load_curve.get_data()
+data = load_curve.data
 
 data["weekday"] = data.index.weekday
 
