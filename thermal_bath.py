@@ -35,10 +35,7 @@ class LoadCurve:
 
 
     def load_data(self):
-        """src_path: str path to csv containing load data
-            unit: str unit of data in csv
-            all data must have same unit W, kW, MW, GW or TW
-        loads data from csv at src_path
+        """loads data from csv at self._src_path
         puts it into self._data as pd.DataFrame"""
         with open(self._src_path, 'r') as f:
             self._data = pd.read_csv(f)
@@ -60,8 +57,7 @@ class LoadCurve:
     def unit(self, unit):
         """unit: 'W', 'kW', 'MW', 'GW' or 'TW'
         turns all values in self.data to parsed unit
-        sets self.unit to parsed unit
-        set times_to_index first"""
+        sets self.unit to parsed unit"""
         if unit in self._factor_dict.keys():
             curr_factor = self._factor_dict[self._unit]
             new_factor = self._factor_dict[unit]
@@ -84,16 +80,13 @@ class LoadCurve:
 
 
     def time_to_datetime(self):
-        """time_key: str, collumn holding timestamp information as string
-        
-        turns all elements in self.data[time_key] from str formated as 'dd-mm-yyyy hh:mm:ss'
+        """turns all elements in self.data[self._time_key] from str formated as 'dd-mm-yyyy hh:mm:ss'
             into Timestamp""" 
         self._data[self._time_key] = self._data[self._time_key].apply(self._get_date_time)
 
 
     def time_to_index(self):
-        """time_key: key of collumn that holds Timestamps
-        sets time_key column to index"""
+        """sets self_time_key column to index"""
         self._data.set_index(self._time_key, inplace=True)
 
 
