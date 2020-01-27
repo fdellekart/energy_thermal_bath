@@ -5,7 +5,15 @@ from datetime import datetime
 
 
 class LoadCurve:
+    """LoadCurve class
+        data_source: str with csv file path containing load_curve data
+        unit: str with unit of load data in csv, all values must be same unit
+                W, kW, MW, GW or TW
+        time_key: str with collumn key of timestamps in csv
+                    must be formatted as 'dd-mm-yyyy hh:mm:ss'
+                    time collumn will be turned into datetime objects and set as index of pd.df"""
     def __init__(self, data_source, unit, time_key):
+        
         self._data = None
         self._factor_dict = {'W' : 10**0,
                             'kW' : 10**3,
@@ -35,17 +43,18 @@ class LoadCurve:
         with open(self._src_path, 'r') as f:
             self._data = pd.read_csv(f)
 
+
     @property
     def data(self):
-        """Returns pd.DataFrame holding the load_curve data
-            None if no data was loaded"""
+        """Returns pd.DataFrame holding the load_curve data"""
         return self._data
+
 
     @property
     def unit(self):
-        """Returns str unit W, kW, MW, GW or TW
-            None if no data was loaded"""
+        """Returns str unit W, kW, MW, GW or TW"""
         return self._unit
+
 
     @unit.setter
     def unit(self, unit):
