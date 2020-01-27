@@ -8,7 +8,7 @@ load_curve = LoadCurve("load_curve_thermal_bath.csv", "W", "times")
 
 def test_load_data():
     assert isinstance(load_curve.data, DataFrame)
-    assert load_curve._unit == "W"
+    assert load_curve.unit == "W"
     assert load_curve._time_key == "times"
 
 
@@ -27,14 +27,14 @@ def test_time_to_index():
 
 def test_set_unit():
     with pytest.raises(Exception):
-        load_curve.set_unit("wrong_unit")
+        load_curve.unit = "wrong_unit"
 
     factor_dict = load_curve._factor_dict
 
     data = load_curve.data
 
     for unit in factor_dict:
-        load_curve.set_unit(unit)
+        load_curve.unit = unit
         bool_frame = abs(data - load_curve.data*factor_dict[unit]) < 0.1
         assert bool_frame.all(axis=None)
 

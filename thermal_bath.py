@@ -47,6 +47,20 @@ class LoadCurve:
             None if no data was loaded"""
         return self._unit
 
+    @unit.setter
+    def unit(self, unit):
+        """unit: 'W', 'kW', 'MW', 'GW' or 'TW'
+        turns all values in self.data to parsed unit
+        sets self.unit to parsed unit
+        set times_to_index first"""
+        if unit in self._factor_dict.keys():
+            curr_factor = self._factor_dict[self._unit]
+            new_factor = self._factor_dict[unit]
+            self._data = self._data.apply(lambda x: (x * curr_factor) / new_factor)
+            self._unit = unit
+        else:
+            raise Exception("KeyError: Unit not existing. Must be W, kW, MW, GW or TW")
+
 
     def _get_date_time(self, datetime_string):
         """datetime_string: str formated as 'dd-mm-yyyy hh:mm:ss'
@@ -72,20 +86,6 @@ class LoadCurve:
         """time_key: key of collumn that holds Timestamps
         sets time_key column to index"""
         self._data.set_index(self._time_key, inplace=True)
-
-
-    def set_unit(self, unit):
-        """unit: 'W', 'kW', 'MW', 'GW' or 'TW'
-        turns all values in self.data to parsed unit
-        sets self.unit to parsed unit
-        set times_to_index first"""
-        if unit in self._factor_dict.keys():
-            curr_factor = self._factor_dict[self._unit]
-            new_factor = self._factor_dict[unit]
-            self._data = self._data.apply(lambda x: (x * curr_factor) / new_factor)
-            self._unit = unit
-        else:
-            raise Exception("KeyError: Unit not existing. Must be W, kW, MW, GW or TW")
 
 
     def moving_average(self, col_key, window):
