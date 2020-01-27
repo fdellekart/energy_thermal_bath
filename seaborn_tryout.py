@@ -11,6 +11,6 @@ load_curve = LoadCurve(SRC_PATH, "W", TIME_KEY)
 
 load_curve.moving_average("lüftung", 5)
 
-sns.pairplot(load_curve.get_data())
+sns.pairplot(load_curve.data)
 
 plt.show()

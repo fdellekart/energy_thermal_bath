@@ -8,7 +8,7 @@ TIME_KEY = "times"
 
 load_curve = LoadCurve(SRC_PATH, "W", TIME_KEY)
 
-source = ColumnDataSource(load_curve.get_data())
+source = ColumnDataSource(load_curve.data)
 
 output_file(r"plots\load_curve.html")
 
