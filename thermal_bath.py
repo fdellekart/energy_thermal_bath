@@ -64,7 +64,7 @@ class LoadCurve:
             self._data = self._data.apply(lambda x: (x * curr_factor) / new_factor)
             self._unit = unit
         else:
-            raise Exception("KeyError: Unit not existing. Must be W, kW, MW, GW or TW")
+            raise Warning("Unit was not changed. Must be W, kW, MW, GW or TW")
 
 
     def _get_date_time(self, datetime_string):

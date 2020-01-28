@@ -3,6 +3,7 @@ from pandas import DataFrame
 import pytest
 from datetime import datetime
 
+
 load_curve = LoadCurve("load_curve_thermal_bath.csv", "W", "times")
 
 
@@ -26,7 +27,7 @@ def test_time_to_index():
 
 
 def test_set_unit():
-    with pytest.raises(Exception):
+    with pytest.raises(Warning):
         load_curve.unit = "wrong_unit"
 
     factor_dict = load_curve._factor_dict
