@@ -7,15 +7,11 @@ from thermal_bath import LoadCurve
 
 output_file("fourier_gesamt.html")
 
-#data loading and preparation
-TIME_KEY = "times"
-SRC_PATH = "load_curve_thermal_bath.csv"
-
-load_curve = LoadCurve(SRC_PATH, "W", TIME_KEY)
+load_curve = LoadCurve("properties.yaml")
 
 #fourier transform
-fft_gesamt = np.abs(fft(load_curve.get_data()["gesamt"].to_numpy()))
-freq = fftfreq(len(load_curve.get_data()["gesamt"].to_numpy()))
+fft_gesamt = np.abs(fft(load_curve.data["gesamt"].to_numpy()))
+freq = fftfreq(len(load_curve.data["gesamt"].to_numpy()))
 freq = freq*0.25
 
 print(fft_gesamt)

@@ -6,10 +6,7 @@ from thermal_bath import LoadCurve
 
 output_file("mean_over_weekdays.html")
 
-TIME_KEY = "times"
-SRC_PATH = "load_curve_thermal_bath.csv"
-
-load_curve = LoadCurve(SRC_PATH, "W", TIME_KEY)
+load_curve = LoadCurve("properties.yaml")
 
 
 data = load_curve.data
