@@ -2,6 +2,7 @@ import pandas as pd
 from bokeh.models import ColumnDataSource
 from bokeh.plotting import figure, output_file, show
 from datetime import datetime
+import yaml
 
 
 class LoadCurve:
@@ -39,6 +40,12 @@ class LoadCurve:
         puts it into self._data as pd.DataFrame"""
         with open(self._src_path, 'r') as f:
             self._data = pd.read_csv(f)
+
+        
+    def load_properties(self, yaml_path):
+        with open(yaml_path, 'r') as pf:
+            prop_dict = yaml.load(pf, Loader=yaml.FullLoader)
+        return prop_dict
 
 
     @property

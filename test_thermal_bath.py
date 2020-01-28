@@ -13,6 +13,14 @@ def test_load_data():
     assert load_curve._time_key == "times"
 
 
+def test_load_properties():
+    prop_dict = load_curve.load_properties("properties.yaml")
+    assert isinstance(prop_dict, dict)
+    assert prop_dict["src_path"] == "load_curve_thermal_bath.csv"
+    assert prop_dict["time_index"] == "times"
+    assert prop_dict["unit"] == "W"
+
+
 def test_get_date_time():
     dt_string = "05-10-2020 17:34:12"
     dt = load_curve._get_date_time(dt_string)
