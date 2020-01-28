@@ -4,21 +4,21 @@ import pytest
 from datetime import datetime
 
 
-load_curve = LoadCurve("load_curve_thermal_bath.csv", "W", "times")
-
-
-def test_load_data():
-    assert isinstance(load_curve.data, DataFrame)
-    assert load_curve.unit == "W"
-    assert load_curve._time_key == "times"
+load_curve = LoadCurve("properties.yaml")
 
 
 def test_load_properties():
     prop_dict = load_curve.load_properties("properties.yaml")
     assert isinstance(prop_dict, dict)
     assert prop_dict["src_path"] == "load_curve_thermal_bath.csv"
-    assert prop_dict["time_index"] == "times"
+    assert prop_dict["time_key"] == "times"
     assert prop_dict["unit"] == "W"
+
+
+def test_load_data():
+    assert isinstance(load_curve.data, DataFrame)
+    assert load_curve.unit == "W"
+    assert load_curve._time_key == "times"
 
 
 def test_get_date_time():

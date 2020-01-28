@@ -13,23 +13,19 @@ class LoadCurve:
         time_key: str with collumn key of timestamps in csv
                     must be formatted as 'dd-mm-yyyy hh:mm:ss'
                     time collumn will be turned into datetime objects and set as index of pd.df"""
-    def __init__(self, data_source, unit, time_key):
+    def __init__(self, yaml_props_path):
         
         self._data = None
+        self._unit = None
+        self._src_path = None
+        self._time_key = None
         self._factor_dict = {'W' : 10**0,
                             'kW' : 10**3,
                             'MW' : 10**6,
                             'GW': 10**9,
                             'TW' : 10**12}
 
-        if unit in self._factor_dict:
-            self._unit = unit
-        else:
-            raise Exception("Unit not valid, must be W, kW, MW, GW or TW")
-
-        self._src_path = data_source
-        self._time_key = time_key
-
+        self.load_properties(yaml_props_path)
         self.load_data()
         self.time_to_datetime()
         self.time_to_index()
@@ -45,6 +41,9 @@ class LoadCurve:
     def load_properties(self, yaml_path):
         with open(yaml_path, 'r') as pf:
             prop_dict = yaml.load(pf, Loader=yaml.FullLoader)
+            self._src_path = prop_dict["src_path"]
+            self._time_key = prop_dict["time_key"]
+            self._unit = prop_dict["unit"]
         return prop_dict
 
 
