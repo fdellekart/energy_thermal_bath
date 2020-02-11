@@ -7,12 +7,13 @@ import yaml
 
 class LoadCurve:
     """LoadCurve class
-        data_source: str with csv file path containing load_curve data
-        unit: str with unit of load data in csv, all values must be same unit
-                W, kW, MW, GW or TW
-        time_key: str with collumn key of timestamps in csv
-                    must be formatted as 'dd-mm-yyyy hh:mm:ss'
-                    time collumn will be turned into datetime objects and set as index of pd.df"""
+        yaml_props_path: str with path to yaml file
+        yaml must contain dict with keys 'src_path', 'time_key', 'unit'
+        src_path: str path where csv with load curve data is stored
+        time_key: str key where Timestamps are in csv
+                    time must be formatted as 'dd-mm-yyyy hh:mm:ss'
+        unit must be 'W', 'kW', 'MW', 'GW' or 'TW'
+        """
     def __init__(self, yaml_props_path):
         
         self._data = None
@@ -33,12 +34,16 @@ class LoadCurve:
 
     def load_data(self):
         """loads data from csv at self._src_path
-        puts it into self._data as pd.DataFrame"""
+        puts it into self._data as pd.DataFrame
+        """
         with open(self._src_path, 'r') as f:
             self._data = pd.read_csv(f)
 
         
     def load_properties(self, yaml_path):
+        """Loads properties of data from yaml file at yaml path.
+            Yaml file must be dict with keys 'src_path', 'time_key', 'unit'
+            """
         with open(yaml_path, 'r') as pf:
             prop_dict = yaml.load(pf, Loader=yaml.FullLoader)
             self._src_path = prop_dict["src_path"]
@@ -49,13 +54,15 @@ class LoadCurve:
 
     @property
     def data(self):
-        """Returns pd.DataFrame holding the load_curve data"""
+        """Returns pd.DataFrame holding the load_curve data
+        """
         return self._data
 
 
     @property
     def unit(self):
-        """Returns str unit W, kW, MW, GW or TW"""
+        """Returns str unit W, kW, MW, GW or TW
+        """
         return self._unit
 
 
@@ -63,7 +70,8 @@ class LoadCurve:
     def unit(self, unit):
         """unit: 'W', 'kW', 'MW', 'GW' or 'TW'
         turns all values in self.data to parsed unit
-        sets self.unit to parsed unit"""
+        sets self.unit to parsed unit
+        """
         if unit in self._factor_dict.keys():
             curr_factor = self._factor_dict[self._unit]
             new_factor = self._factor_dict[unit]
@@ -75,7 +83,8 @@ class LoadCurve:
 
     def _get_date_time(self, datetime_string):
         """datetime_string: str formated as 'dd-mm-yyyy hh:mm:ss'
-        Returns datetime object representing input"""
+        Returns datetime object representing input
+        """
         day_int = int(datetime_string[0:2])
         month_int = int(datetime_string[3:5])
         year_int = int(datetime_string[6:10])
@@ -87,12 +96,14 @@ class LoadCurve:
 
     def time_to_datetime(self):
         """turns all elements in self.data[self._time_key] from str formated as 'dd-mm-yyyy hh:mm:ss'
-            into Timestamp""" 
+            into Timestamp
+            """ 
         self._data[self._time_key] = self._data[self._time_key].apply(self._get_date_time)
 
 
     def time_to_index(self):
-        """sets self_time_key column to index"""
+        """sets self_time_key column to index
+        """
         self._data.set_index(self._time_key, inplace=True)
 
 
@@ -100,12 +111,14 @@ class LoadCurve:
         """col_key: str collumn key of collumn that should be averaged.
             window: int window width
             
-            Performs moving average on self._data[col_key] and adds new column with values"""
+            Performs moving average on self._data[col_key] and adds new column with values
+            """
         self._data["SMA_{}".format(col_key)] = self._data[col_key].rolling(window=window).mean()
 
 
     def remove_average(self):
-        """Drops all columns with keys starting 'SMA_'"""
+        """Drops all columns with keys starting 'SMA_'
+        """
         dropping_labels = []
         for key in self._data.keys():
             if key[:3] == "SMA_":
