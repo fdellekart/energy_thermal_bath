@@ -8,7 +8,6 @@ output_file("mean_over_weekdays.html")
 
 load_curve = LoadCurve("properties.yaml")
 
-
 data = load_curve.data
 
 data["weekday"] = data.index.weekday

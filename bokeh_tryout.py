@@ -6,7 +6,7 @@ from thermal_bath import LoadCurve
 SRC_PATH = "load_curve_thermal_bath.csv"
 TIME_KEY = "times"
 
-load_curve = LoadCurve(SRC_PATH, "W", TIME_KEY)
+load_curve = LoadCurve("properties.yaml")
 
 source = ColumnDataSource(load_curve.data)
 
