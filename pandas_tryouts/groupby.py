@@ -1,12 +1,20 @@
+import sys
+
+
 import pandas as pd
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import ColumnDataSource
 
+
+sys.path.append(r"C:\Users\f.dellekart\OneDrive - MPD-Innovations\Dokumente\Programming\energy_thermal_bath")
+
+
 from thermal_bath import LoadCurve
 
-output_file("mean_over_weekdays.html")
 
-load_curve = LoadCurve("properties.yaml")
+output_file(r"C:\Users\f.dellekart\OneDrive - MPD-Innovations\Dokumente\Programming\energy_thermal_bath\visualization\plots\mean_over_weekdays.html")
+
+load_curve = LoadCurve(r"C:\Users\f.dellekart\OneDrive - MPD-Innovations\Dokumente\Programming\energy_thermal_bath\properties.yaml")
 
 data = load_curve.data
 

@@ -1,12 +1,16 @@
 from bokeh.plotting import figure, output_file, show
 from bokeh.models import ColumnDataSource
 from bokeh.layouts import gridplot
+import sys
+
+
+sys.path.append(r"C:\Users\f.dellekart\OneDrive - MPD-Innovations\Dokumente\Programming\energy_thermal_bath")
+
+
 from thermal_bath import LoadCurve
 
-SRC_PATH = "load_curve_thermal_bath.csv"
-TIME_KEY = "times"
 
-load_curve = LoadCurve("properties.yaml")
+load_curve = LoadCurve(r"C:\Users\f.dellekart\OneDrive - MPD-Innovations\Dokumente\Programming\energy_thermal_bath\properties.yaml")
 
 source = ColumnDataSource(load_curve.data)
 
