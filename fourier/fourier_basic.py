@@ -1,12 +1,11 @@
 import numpy as np
-from math import pi
 from numpy.fft import fft, fftfreq
 from bokeh.plotting import figure, output_file, show, gridplot
 
 output_file(r"C:\Users\f.dellekart\OneDrive - MPD-Innovations\Dokumente\Programming\energy_thermal_bath\visualization\plots\fourier_basic.html")
 
 t = np.linspace(0, 2*np.pi, 1000, endpoint=True)
-f = 3.0 # Frequency in Hz
+f = 23.0 # Frequency in Hz
 A = 100.0 # Amplitude in Unit
 y = A * np.sin(2*np.pi*f*t) # Signal
 
