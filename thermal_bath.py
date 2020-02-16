@@ -1,8 +1,6 @@
-import pandas as pd
-from bokeh.models import ColumnDataSource
-from bokeh.plotting import figure, output_file, show
-from datetime import datetime
 import yaml
+import pandas as pd
+from datetime import datetime
 
 
 class LoadCurve:
@@ -15,7 +13,6 @@ class LoadCurve:
         unit must be 'W', 'kW', 'MW', 'GW' or 'TW'
         """
     def __init__(self, yaml_props_path):
-        
         self._data = None
         self._unit = None
         self._src_path = None
@@ -31,7 +28,6 @@ class LoadCurve:
         self.time_to_datetime()
         self.time_to_index()
 
-
     def load_data(self):
         """loads data from csv at self._src_path
         puts it into self._data as pd.DataFrame
@@ -39,7 +35,6 @@ class LoadCurve:
         with open(self._src_path, 'r') as f:
             self._data = pd.read_csv(f)
 
-        
     def load_properties(self, yaml_path):
         """Loads properties of data from yaml file at yaml path.
             Yaml file must be dict with keys 'src_path', 'time_key', 'unit'
@@ -51,20 +46,17 @@ class LoadCurve:
             self._unit = prop_dict["unit"]
         return prop_dict
 
-
     @property
     def data(self):
         """Returns pd.DataFrame holding the load_curve data
         """
         return self._data
 
-
     @property
     def unit(self):
         """Returns str unit W, kW, MW, GW or TW
         """
         return self._unit
-
 
     @unit.setter
     def unit(self, unit):
@@ -80,7 +72,6 @@ class LoadCurve:
         else:
             raise Warning("Unit was not changed. Must be W, kW, MW, GW or TW")
 
-
     def _get_date_time(self, datetime_string):
         """datetime_string: str formated as 'dd-mm-yyyy hh:mm:ss'
         Returns datetime object representing input
@@ -93,19 +84,16 @@ class LoadCurve:
         second_int = int(datetime_string[17:19])
         return datetime(year_int, month_int, day_int, hour_int, minute_int, second_int)
 
-
     def time_to_datetime(self):
         """turns all elements in self.data[self._time_key] from str formated as 'dd-mm-yyyy hh:mm:ss'
             into Timestamp
             """ 
         self._data[self._time_key] = self._data[self._time_key].apply(self._get_date_time)
 
-
     def time_to_index(self):
-        """sets self_time_key column to index
+        """sets self.time_key column to index
         """
         self._data.set_index(self._time_key, inplace=True)
-
 
     def moving_average(self, col_key, window):
         """col_key: str collumn key of collumn that should be averaged.
@@ -114,7 +102,6 @@ class LoadCurve:
             Performs moving average on self._data[col_key] and adds new column with values
             """
         self._data["SMA_{}".format(col_key)] = self._data[col_key].rolling(window=window).mean()
-
 
     def remove_average(self):
         """Drops all columns with keys starting 'SMA_'
@@ -125,4 +112,3 @@ class LoadCurve:
                 dropping_labels.append(key)
         self._data.drop(dropping_labels, axis=1, inplace=True)
         
-
